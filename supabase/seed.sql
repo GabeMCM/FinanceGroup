@@ -1,0 +1,2 @@
+-- Intentionally empty.
+-- The app starts with private user data only after sign-up.
