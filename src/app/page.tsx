@@ -1,5 +1,5 @@
-import { FinanceApp } from "@/components/finance-app";
+import { AuthGate } from "@/components/auth-gate";
 
 export default function Home() {
-  return <FinanceApp />;
+  return <AuthGate />;
 }

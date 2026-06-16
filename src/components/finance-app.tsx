@@ -183,7 +183,13 @@ function Metric({
   );
 }
 
-export function FinanceApp() {
+export function FinanceApp({
+  onLogout,
+  userEmail,
+}: {
+  onLogout?: () => void;
+  userEmail?: string;
+}) {
   const [activeView, setActiveView] = useState<View>("home");
   const [, setViewHistory] = useState<View[]>([]);
   const [actionOpen, setActionOpen] = useState(false);
@@ -674,7 +680,9 @@ export function FinanceApp() {
 
           {activeView === "api" && <ApiView />}
 
-          {activeView === "more" && <MoreView setView={go} />}
+          {activeView === "more" && (
+            <MoreView onLogout={onLogout} setView={go} userEmail={userEmail} />
+          )}
         </div>
       </div>
 
@@ -2168,7 +2176,15 @@ function BottomNav({
   );
 }
 
-function MoreView({ setView }: { setView: (view: View) => void }) {
+function MoreView({
+  onLogout,
+  setView,
+  userEmail,
+}: {
+  onLogout?: () => void;
+  setView: (view: View) => void;
+  userEmail?: string;
+}) {
   const shortcuts: Array<[View, string, string]> = [
     ["entries", "Lancamentos", "Entradas, saidas e historico"],
     ["debts", "Dividas", "Parcelas e saldos em aberto"],
@@ -2183,17 +2199,20 @@ function MoreView({ setView }: { setView: (view: View) => void }) {
     ["Seguranca", "Senha, sessoes e acesso"],
     ["Sair da conta", "Encerrar sessao neste aparelho"],
   ];
+  const displayName = userEmail?.split("@")[0] || "Usuario";
 
   return (
     <div className="space-y-4">
       <Panel className="p-4">
         <div className="flex items-center gap-3">
           <div className="grid h-14 w-14 place-items-center rounded-full bg-slate-950 text-lg font-semibold text-white">
-            M
+            {displayName.slice(0, 1).toUpperCase()}
           </div>
           <div className="min-w-0">
-            <h2 className="font-semibold">Marina</h2>
-            <p className="text-sm text-slate-500">Conta pessoal privada</p>
+            <h2 className="truncate font-semibold">{displayName}</h2>
+            <p className="truncate text-sm text-slate-500">
+              {userEmail || "Conta pessoal privada"}
+            </p>
           </div>
         </div>
       </Panel>
@@ -2229,6 +2248,7 @@ function MoreView({ setView }: { setView: (view: View) => void }) {
             <button
               className="flex w-full items-center justify-between gap-3 p-4 text-left"
               key={title}
+              onClick={title === "Sair da conta" ? onLogout : undefined}
               type="button"
             >
               <span className="min-w-0">
