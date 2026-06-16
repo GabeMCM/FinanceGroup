@@ -144,7 +144,7 @@ export function AuthGate() {
           {!isSupabaseConfigured ? (
             <div className="mt-5 rounded-xl bg-orange-50 p-4 text-sm text-orange-900">
               Configure `NEXT_PUBLIC_SUPABASE_URL` e
-              `NEXT_PUBLIC_SUPABASE_ANON_KEY` no `.env.local`.
+              `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` no `.env.local`.
             </div>
           ) : (
             <form className="mt-5 grid gap-3" onSubmit={submit}>
