@@ -1191,7 +1191,12 @@ function InvitesView({
   const [draft, setDraft] = useState("");
   const [copied, setCopied] = useState(false);
   const group = groups.find((item) => item.id === inviteGroupId) ?? groups[0];
-  const inviteLink = `https://finance.local/cadastro?convite=${group?.inviteCode ?? ""}`;
+  const appOrigin =
+    process.env.NEXT_PUBLIC_APP_URL ??
+    (typeof window !== "undefined"
+      ? window.location.origin
+      : "https://finance-ashen-nine.vercel.app");
+  const inviteLink = `${appOrigin}/?invite=${group?.inviteCode ?? ""}`;
 
   async function copyInvite() {
     try {

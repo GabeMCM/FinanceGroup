@@ -11,6 +11,7 @@
 ```env
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+NEXT_PUBLIC_APP_URL=https://finance-ashen-nine.vercel.app
 ```
 
 6. Faça o deploy na Vercel.
