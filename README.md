@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FinanceGroup
 
-## Getting Started
+FinanceGroup e um app web mobile-first para gestao financeira privada entre pessoas, familias ou grupos que dividem despesas.
 
-First, run the development server:
+O foco nao e expor renda, saldo ou gastos pessoais. O app calcula repasses e saldos entre participantes mantendo dados sensiveis privados por usuario.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Ideia central
+
+- Tudo nasce privado por padrao.
+- Cada usuario tem suas proprias categorias, entradas, saidas, dividas e bases de calculo.
+- Despesas compartilhadas acontecem dentro de grupos.
+- Cada grupo pode ter regra de divisao propria: 50/50, proporcional, percentual fixo ou individual.
+- Uma despesa de grupo pode registrar quanto cada integrante ja pagou.
+- O sistema calcula quem deve pagar, quem deve receber e o saldo final.
+
+## Funcionalidades atuais
+
+- Login e cadastro com Supabase Auth.
+- Perfil basico de usuario.
+- Dashboard mobile-first.
+- Categorias individuais por usuario.
+- Lancamentos privados.
+- Compromissos mensais.
+- Dividas e parcelamentos.
+- Grupos compartilhados.
+- Convites por link.
+- Despesas de grupo com pagamentos por membro.
+- API preparada para integracao futura com IA/chat.
+- Schema Supabase com RLS para isolamento de dados.
+
+## Stack
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Supabase
+- Vercel
+- Yarn
+
+## Variaveis de ambiente
+
+Crie um `.env.local` apenas para desenvolvimento local:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Na Vercel, configure as mesmas variaveis em **Settings > Environment Variables**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Desenvolvimento
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+yarn install
+yarn dev
+```
 
-## Learn More
+Abra:
 
-To learn more about Next.js, take a look at the following resources:
+```text
+http://127.0.0.1:3001
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Banco de dados
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+O schema esta em:
 
-## Deploy on Vercel
+```text
+supabase/migrations/202606160001_initial_schema.sql
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Para configurar manualmente:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Crie um projeto no Supabase.
+2. Abra o SQL Editor.
+3. Cole e execute o conteudo da migration.
+4. Copie `Project URL` e `publishable key`.
+5. Configure as variaveis no ambiente local ou na Vercel.
+
+## Deploy
+
+A ordem recomendada e:
+
+1. Configurar Supabase.
+2. Aplicar migrations.
+3. Configurar variaveis na Vercel.
+4. Fazer deploy do app Next.js.
+
+Mais detalhes em:
+
+```text
+docs/deploy.md
+```
+
+## Privacidade
+
+O app foi desenhado para nunca exibir para outra pessoa:
+
+- salario;
+- ganhos privados;
+- gastos pessoais;
+- saldo disponivel;
+- patrimonio;
+- base financeira bruta.
+
+O que pode ser compartilhado sao apenas resultados de divisao, repasses e saldos finais dentro dos grupos permitidos.
