@@ -35,6 +35,7 @@ export function AuthGate() {
   const [session, setSession] = useState<Session | null>(null);
   const [mode, setMode] = useState<Mode>("login");
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(Boolean(supabase));
@@ -67,6 +68,7 @@ export function AuthGate() {
       body: JSON.stringify({
         displayName:
           displayName || nextSession.user.user_metadata?.display_name || email,
+        username,
       }),
       headers: {
         Authorization: `Bearer ${nextSession.access_token}`,
@@ -86,12 +88,23 @@ export function AuthGate() {
     setSubmitting(true);
     setMessage("");
 
+    if (mode === "signup" && !username.trim()) {
+      setMessage("Escolha um username para receber convites.");
+      setSubmitting(false);
+      return;
+    }
+
     const result =
       mode === "signup"
         ? await supabase.auth.signUp({
             email,
             password,
-            options: { data: { display_name: name.trim() || email } },
+            options: {
+              data: {
+                display_name: name.trim() || email,
+                username: username.trim().toLowerCase().replace(/^@/, ""),
+              },
+            },
           })
         : await supabase.auth.signInWithPassword({ email, password });
 
@@ -149,13 +162,27 @@ export function AuthGate() {
           ) : (
             <form className="mt-5 grid gap-3" onSubmit={submit}>
               {mode === "signup" && (
-                <AuthField label="Nome">
-                  <AuthInput
-                    onChange={(event) => setName(event.target.value)}
-                    placeholder="Seu nome"
-                    value={name}
-                  />
-                </AuthField>
+                <>
+                  <AuthField label="Nome">
+                    <AuthInput
+                      onChange={(event) => setName(event.target.value)}
+                      placeholder="Seu nome"
+                      value={name}
+                    />
+                  </AuthField>
+                  <AuthField label="Username">
+                    <AuthInput
+                      autoCapitalize="none"
+                      onChange={(event) =>
+                        setUsername(
+                          event.target.value.toLowerCase().replace(/\s+/g, ""),
+                        )
+                      }
+                      placeholder="@seunome"
+                      value={username}
+                    />
+                  </AuthField>
+                </>
               )}
               <AuthField label="Email">
                 <AuthInput

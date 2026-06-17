@@ -27,12 +27,17 @@ export async function PUT(request: NextRequest) {
     typeof payload.displayName === "string"
       ? payload.displayName
       : auth.user.email ?? "Usuario";
+  const username =
+    typeof payload.username === "string"
+      ? payload.username.trim().toLowerCase()
+      : undefined;
 
   const { data, error } = await auth.supabase
     .from("profiles")
     .upsert({
       id: auth.user.id,
       display_name: displayName,
+      ...(username ? { username } : {}),
       avatar_url: typeof payload.avatarUrl === "string" ? payload.avatarUrl : null,
     })
     .select("*")
